@@ -121,7 +121,7 @@ void percorre(int *v, int tamPercorrido) {
 
   for (int i = 0; i < tamPercorrido; i += 4) {
     string direcao = direcaoMenorCaminho(&(vetorMov[i]), &maiorDir);
-    printf("Movimentando para %s distancia = %i\n", direcao.c_str(), maiorDir);
+    printf("Movimentando para %s - Distância = %i\n", direcao.c_str(), maiorDir);
   }
 }
 
