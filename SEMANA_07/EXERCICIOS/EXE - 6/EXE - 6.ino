@@ -86,7 +86,7 @@ String HTML = "<!DOCTYPE html>\
 String HTML2 = "<!DOCTYPE html>\
 <html>\
 <body>\
-<h3>Player 1 ganhou!</h3>\
+<h3>Fim de Jogo!</h3>\
 </body>\
 </html>";
 
