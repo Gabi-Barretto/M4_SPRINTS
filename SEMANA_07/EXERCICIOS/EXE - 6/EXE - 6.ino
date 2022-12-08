@@ -1,17 +1,16 @@
 #include <WiFi.h>
 #include <WebServer.h>
 
-#define LED_1 21
-#define LED_2 48
-
 #define BUTTON_1 1
 #define BUTTON_2 2
 
-#define BUZZER 37
+#define BUZZER 8
+
+#define RGB_BRIGHTNESS 64 
 
 #define seed_value 1
 #define offset 1
-#define range 4
+#define range 8
 
 //Iniciando variáveis necessárias para a jogabilidade
 int points = 0;
@@ -51,9 +50,6 @@ void setup() {
   server.begin();
   Serial.println("HTTP server started");
 
-  pinMode(LED_1, OUTPUT);
-  pinMode(LED_2, OUTPUT);
-  
   pinMode(BUZZER, OUTPUT);
 
   pinMode(BUTTON_1, INPUT);
@@ -83,19 +79,9 @@ String HTML = "<!DOCTYPE html>\
 </body>\
 </html>";
 
-String HTML2 = "<!DOCTYPE html>\
-<html>\
-<body>\
-<h3>Fim de Jogo!</h3>\
-</body>\
-</html>";
-
 // Handle root url (/)
 void handle_root() {
   server.send(200, "text/html", HTML);
-  if (end_game) {
-    server.send(200, "text/html", HTML2);
-  }
 }
 
 void checkState () {
@@ -130,7 +116,9 @@ void game() {
   int nmr = offset + (rand() % range);
   int nmr_2 = offset + (rand() % range);
 
-  //Serial.println(nmr);
+  Serial.print("pi: ");
+  Serial.println(nmr);
+  Serial.print("vivo ou morto: ");
   Serial.println(nmr_2);
 
   for (int i = 0; i < nmr; i++)
@@ -143,26 +131,30 @@ void game() {
 
     true_state = true;
 
-    digitalWrite(LED_2, HIGH);
+    neopixelWrite(RGB_BUILTIN,0,RGB_BRIGHTNESS,0); // Red
     tone(BUZZER,Tones[2],470);
-  
-    delay(400);
-    checkState();
 
-    digitalWrite(LED_2, LOW);
+
+    delay(100);
+    checkState();
+    delay(400);
+    
+    neopixelWrite(RGB_BUILTIN,0,0,0);
+
   }
   else {
 
     true_state = false;
 
-    digitalWrite(LED_1, HIGH);
     tone(BUZZER,Tones[2],470);
-  
+    neopixelWrite(RGB_BUILTIN,RGB_BRIGHTNESS,0,0); // Green
+
+    delay(100);
+    checkState();
     delay(400);
 
-    checkState();
+    neopixelWrite(RGB_BUILTIN,0,0,0);
 
-    digitalWrite(LED_1, LOW);
   }
 
   delay(1000);
